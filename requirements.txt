@@ -2,8 +2,9 @@ pytube
 moviepy
 ffmpeg
 setuptools-rust
-tiktoken==0.3.1
+tiktoken
 ffmpeg-python==0.2.0
 streamlit
 datetime
-openai-whisper
+#openai-whisper
+git+https://github.com/openai/whisper.git

@@ -41,75 +41,6 @@ else:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # # Specify the directory path
 # mp4_path = 'medias/mp4'
 
@@ -157,19 +88,6 @@ if youtube_button:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     # Get a list of all files in the directory
     files = os.listdir(mp4_directory)
 
@@ -189,22 +107,6 @@ if youtube_button:
         
         # Rename the file
         os.rename(current_path, new_path)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -232,30 +134,6 @@ if youtube_button:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     col1, col2 = st.columns(2)
     
 
@@ -275,19 +153,6 @@ if youtube_button:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     txt_path = f"{txt_directory}/output.txt" 
 
     # Open the file in write mode
@@ -296,18 +161,6 @@ if youtube_button:
         file.write(result['text'])
 
     # print("Data saved to", txt_path)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

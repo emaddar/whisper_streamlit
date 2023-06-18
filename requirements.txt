@@ -1,6 +1,7 @@
 pytube
 moviepy
 ffmpeg
+ffmpeg-python
 setuptools-rust
 tiktoken
 ffmpeg-python==0.2.0

@@ -8,4 +8,4 @@ tiktoken
 streamlit
 datetime
 #openai-whisper
-git+https://github.com/openai/whisper.git
+git+https://github.com/openai/whisper.git 

@@ -7,5 +7,8 @@ tiktoken
 # ffmpeg-python==0.2.0
 streamlit
 datetime
+pandas
+pyperclip
 #openai-whisper
+
 git+https://github.com/openai/whisper.git 

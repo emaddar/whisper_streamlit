@@ -1,10 +1,10 @@
 pytube
 moviepy
-ffmpeg
+# ffmpeg
 ffmpeg-python
 setuptools-rust
 tiktoken
-ffmpeg-python==0.2.0
+# ffmpeg-python==0.2.0
 streamlit
 datetime
 #openai-whisper

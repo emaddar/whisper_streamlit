@@ -74,111 +74,111 @@ if youtube_button:
 
 
 
+    with st.spinner("Download Youtube as MP4"):
+        # Create a YouTube object
+        yt = YouTube(video_url)
 
-    # Create a YouTube object
-    yt = YouTube(video_url)
+        # Get the lowest resolution video stream
+        stream = yt.streams.get_lowest_resolution()
 
-    # Get the lowest resolution video stream
-    stream = yt.streams.get_lowest_resolution()
-
-    # Download the video
-    stream.download(mp4_directory)
-    st.write('YouTube download ...................... OK')
-
-
-
-
-    # Get a list of all files in the directory
-    files = os.listdir(mp4_directory)
-
-    # Iterate over each file and rename it
-    for filename in files:
-        # Construct the current file path
-        current_path = os.path.join(mp4_directory, filename)
-        
-        # Split the current filename and extension
-        name, extension = os.path.splitext(filename)
-        
-        # Construct the new filename
-        new_name = 'video' + extension
-        
-        # Construct the new file path
-        new_path = os.path.join(mp4_directory, new_name)
-        
-        # Rename the file
-        os.rename(current_path, new_path)
-
-
-
-
+        # Download the video
+        stream.download(mp4_directory)
         
 
-    # # Specify the output path for the converted MP3 file
-    # mp3_path = 'medias/mp3/my_audio.mp3'
-
-    # Load the video file
-    video = VideoFileClip(f"{mp4_directory}/video.mp4")
-
-    # Extract the audio from the video file
-    audio = video.audio
-
-    # Save the audio as an MP3 file
-    audio.write_audiofile(f"{mp3_directory}/my_audio.mp3", codec='mp3')
-
-    # Close the video and audio files
-    video.close()
-    audio.close()
-
-    st.write('Convert mp4 to mp3..................... OK')
 
 
+    with st.spinner("Convert MP4 to MP3"):
+        # Get a list of all files in the directory
+        files = os.listdir(mp4_directory)
 
-
-    col1, col2 = st.columns(2)
-    
-
-    
-
-    model = whisper.load_model("tiny")
-    result = model.transcribe(f"{mp3_directory}/my_audio.mp3")
-    print(result["text"])
-
-
-    
-    col2.audio(f"{mp3_directory}/my_audio.mp3")
-    col2.video(video_url)
+        # Iterate over each file and rename it
+        for filename in files:
+            # Construct the current file path
+            current_path = os.path.join(mp4_directory, filename)
+            
+            # Split the current filename and extension
+            name, extension = os.path.splitext(filename)
+            
+            # Construct the new filename
+            new_name = 'video' + extension
+            
+            # Construct the new file path
+            new_path = os.path.join(mp4_directory, new_name)
+            
+            # Rename the file
+            os.rename(current_path, new_path)
 
 
 
 
+            
+    with st.spinner("Transcribe YouTube Video ... "):
+            # # Specify the output path for the converted MP3 file
+            # mp3_path = 'medias/mp3/my_audio.mp3'
+
+            # Load the video file
+            video = VideoFileClip(f"{mp4_directory}/video.mp4")
+
+            # Extract the audio from the video file
+            audio = video.audio
+
+            # Save the audio as an MP3 file
+            audio.write_audiofile(f"{mp3_directory}/my_audio.mp3", codec='mp3')
+
+            # Close the video and audio files
+            video.close()
+            audio.close()
+
+        
 
 
-    txt_path = f"{txt_directory}/output.txt" 
-
-    # Open the file in write mode
-    with open(txt_path, 'w') as file:
-        # Write the data to the file
-        file.write(result['text'])
-
-    # print("Data saved to", txt_path)
 
 
+            col1, col2 = st.columns(2)
+            
 
-    col1.info(f"Detected language: {result['language']}")
+            
 
-
-    
-    for segment in result['segments']:
-        start = round(float(segment['start']),2)
-        end = round(float(segment['end']),2)
-        text = segment['text']
-        col1.markdown(f"""[{start} : {end}] : {text}""")
-
-    
+            model = whisper.load_model("tiny")
+            result = model.transcribe(f"{mp3_directory}/my_audio.mp3")
+            print(result["text"])
 
 
-                                                                                    
-    st.download_button('Download text as csv', result['text'])
+            
+            col2.audio(f"{mp3_directory}/my_audio.mp3")
+            col2.video(video_url)
+
+
+
+
+
+
+            txt_path = f"{txt_directory}/output.txt" 
+
+            # Open the file in write mode
+            with open(txt_path, 'w') as file:
+                # Write the data to the file
+                file.write(result['text'])
+
+            # print("Data saved to", txt_path)
+
+
+
+            col1.info(f"Detected language: {result['language']}")
+
+
+            
+            for segment in result['segments']:
+                start = round(float(segment['start']),2)
+                end = round(float(segment['end']),2)
+                text = segment['text']
+                col1.markdown(f"""[{start} : {end}] : {text}""")
+
+            
+
+
+                                                                                            
+            st.download_button('Download text as csv', result['text'])
 
 
 

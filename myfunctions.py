@@ -137,7 +137,7 @@ def mp4_to_mp3(mp4_directory, mp3_directory):
     audio.close()
 
 
-@st.cache_data()
+
 def transcribe_mp3(mp3_directory, my_audio):
     model = whisper.load_model("tiny")
     result = model.transcribe(f"{mp3_directory}/{my_audio}.mp3")
@@ -152,7 +152,7 @@ def transcribe_mp3(mp3_directory, my_audio):
 
 
 
-@st.cache_data()
+
 def with_opencv(filename):
     video = cv2.VideoCapture(filename)
 

@@ -150,7 +150,7 @@ if youtube_button or st.session_state.keep_graphics:
             #concatenated_text = concatenate_txt_files(txt_directory)
             #st.download_button('Download text as csv', concatenated_text)
             result = result_text
-            user_text = col1.text_area("The Complete Text",result['text'], height=400)
+            user_text = col1.text_area("The Complete Text",result, height=400)
       
             col1.download_button(
                         label=f"Download transcribe as txt",

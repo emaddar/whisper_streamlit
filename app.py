@@ -126,7 +126,7 @@ if youtube_button:
                         col1.markdown(f"""[{start} : {end}] : {text}""")
 
 
-                    resut_text = result['text'] + " "
+                    resut_text = resut_text + result['text'] + " "
 
             video.close()
             col2.video(video_url)

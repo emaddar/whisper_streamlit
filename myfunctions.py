@@ -147,7 +147,7 @@ def with_opencv(filename):
 
 
 
-@st.cache_data()
+
 def concatenate_txt_files(directory):
     # Get a list of all text files in the directory
     txt_files = glob.glob(os.path.join(directory, "*.txt"))

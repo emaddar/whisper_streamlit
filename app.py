@@ -141,7 +141,7 @@ if youtube_button:
 
             col1.download_button(
                         label=f"Download transcribe as txt",
-                        data=result['text'],
+                        data=concatenated_text,
                         file_name=f'Transcribe YouTube Video {datetime.now()}.txt',
                         mime='text/plain'
                     )

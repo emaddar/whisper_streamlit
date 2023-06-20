@@ -56,15 +56,15 @@ if youtube_button:
                 st.audio(f"{mp3_directory}/my_audio.mp3")
                 st.video(video_url)
 
-            with st.spinner("Transcribe YouTube Video ... "):
-                result = transcribe_mp3(mp3_directory, "my_audio") 
-
-                txt_path = f"{txt_directory}/output.txt" 
-
-                # Open the file in write mode
-                with open(txt_path, 'w') as file:
-                    # Write the data to the file
-                    file.write(result['text'])
+                with st.spinner("Transcribe YouTube Video ... "):
+                    result = transcribe_mp3(mp3_directory, "my_audio") 
+    
+                    txt_path = f"{txt_directory}/output.txt" 
+    
+                    # Open the file in write mode
+                    with open(txt_path, 'w') as file:
+                        # Write the data to the file
+                        file.write(result['text'])
 
             with col1:
                 st.info(f"Detected language: {result['language']}")

@@ -84,7 +84,7 @@ if youtube_button:
                 #st.download_button('Download text as csv', result['text'])
                 st.download_button(
                         label=f"Download data as  text as csv",
-                        data=result['text'],
+                        data=data,
                         file_name=f'Transcribe YouTube Video {datetime.now()}.csv',
                         mime='text/csv'
                     )

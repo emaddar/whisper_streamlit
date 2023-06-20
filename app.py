@@ -67,11 +67,11 @@ if youtube_button or st.session_state.keep_graphics:
 
                     
 
-            with col2:
-                st.audio(f"{mp3_directory}/my_audio.mp3")
-                st.video(video_url)
+            
+            col2.audio(f"{mp3_directory}/my_audio.mp3")
+            col2.video(video_url)
 
-                with st.spinner("Transcribe YouTube Video ... "):
+            with col2.spinner("Transcribe YouTube Video ... "):
                     result = transcribe_mp3(mp3_directory, "my_audio") 
     
                     txt_path = f"{txt_directory}/output.txt" 

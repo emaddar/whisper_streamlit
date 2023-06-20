@@ -8,7 +8,7 @@ import cv2
 import glob
 import streamlit as st
 
-@st.cache_data()
+
 def current_directory(n):
     # Get the current directory
     current_directory = os.getcwd()
@@ -31,7 +31,7 @@ def current_directory(n):
 
 
 
-@st.cache_data()
+
 def create_folder_and_directories():
     # Get the current date and time
     now = datetime.now()
@@ -65,30 +65,8 @@ def download_youtube(video_url, mp4_directory):
 
 
 
-@st.cache_data()
-def rename_video(mp4_directory):
-    # Get a list of all files in the directory
-    files = os.listdir(mp4_directory)
 
-    # Iterate over each file and rename it
-    for filename in files:
-            # Construct the current file path
-            current_path = os.path.join(mp4_directory, filename)
-            
-            # Split the current filename and extension
-            name, extension = os.path.splitext(filename)
-            
-            # Construct the new filename
-            new_name = 'video' + extension
-            
-            # Construct the new file path
-            new_path = os.path.join(mp4_directory, new_name)
-            
-            # Rename the file
-            os.rename(current_path, new_path)
-
-
-@st.cache_data()
+)
 def rename_videos(mp4_directory):
     # Get a list of all files in the directory
     files = os.listdir(mp4_directory)

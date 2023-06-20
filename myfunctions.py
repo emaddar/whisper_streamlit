@@ -149,35 +149,6 @@ def transcribe_mp3(mp3_directory, my_audio):
 
 
 
-@st.cache_data()
-def cut_and_convert_to_mp3(filename, mp3_directory, txt_directory):
-    video = VideoFileClip(filename)
-    duration = video.duration
-
-    # Calculate the number of 2-minute segments
-    num_segments = int(duration // 300) + 1
-
-    for i in range(num_segments):
-        # Set the start and end times for the segment
-        start_time = i * 300  # 2 minutes
-        end_time = min((i + 1) * 300, duration)  # 2 minutes or remainder of the video
-
-        # Extract the segment and convert to MP3
-        segment = video.subclip(start_time, end_time)
-        output_filename = f"{mp3_directory}/segment_{i + 1}.mp3"
-        segment.audio.write_audiofile(output_filename)
-
-        result = transcribe_mp3(mp3_directory, f"segment_{i + 1}")
-
-
-        txt_path = f"{txt_directory}/output_{i + 1}.txt" 
-        # Open the file in write mode
-        with open(txt_path, 'w') as file:
-            # Write the data to the file
-            file.write(result['text'])
-
-    video.close()
-    return result
 
 
 

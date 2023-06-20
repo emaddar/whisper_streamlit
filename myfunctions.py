@@ -66,7 +66,7 @@ def download_youtube(video_url, mp4_directory):
 
 
 
-)
+
 def rename_videos(mp4_directory):
     # Get a list of all files in the directory
     files = os.listdir(mp4_directory)

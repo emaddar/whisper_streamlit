@@ -130,7 +130,14 @@ if youtube_button:
 
 
             concatenated_text = concatenate_txt_files(txt_directory)
-            st.download_button('Download text as csv', concatenated_text)
+            #st.download_button('Download text as csv', concatenated_text)
+
+            st.download_button(
+                        label=f"Download data as  text as csv}",
+                        data=buffer,
+                        file_name=f'Transcribe YouTube Video {datetime.now()}.csv',
+                        mime='text/csv'
+                    )
 
 
 

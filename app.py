@@ -83,7 +83,7 @@ if youtube_button:
                                                                              
                 #st.download_button('Download text as csv', result['text'])
                 st.download_button(
-                        label=f"Download data as  text as txt",
+                        label=f"Download transcribe as txt",
                         data=result['text'],
                         file_name=f'Transcribe YouTube Video {datetime.now()}.txt',
                         mime='text/plain'
@@ -140,7 +140,7 @@ if youtube_button:
             #st.download_button('Download text as csv', concatenated_text)
 
             col1.download_button(
-                        label=f"Download data as  text as csv",
+                        label=f"Download transcribe as txt",
                         data=result['text'],
                         file_name=f'Transcribe YouTube Video {datetime.now()}.csv',
                         mime='text/csv'

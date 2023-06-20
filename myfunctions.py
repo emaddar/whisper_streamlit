@@ -121,7 +121,7 @@ def rename_videos(mp4_directory):
         # No files in the directory
         print("No files found in the directory.")
 
-@st.cache_data()
+
 def mp4_to_mp3(mp4_directory, mp3_directory):
      # Load the video file
     video = VideoFileClip(f"{mp4_directory}/video.mp4")

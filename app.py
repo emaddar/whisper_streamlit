@@ -101,7 +101,7 @@ if youtube_button:
 
             # Calculate the number of 5-minute segments
             num_segments = int(duration // 300) + 1
-
+            result_text = ''
             for i in range(num_segments):
                 
                     # Set the start and end times for the segment
@@ -126,22 +126,18 @@ if youtube_button:
                         col1.markdown(f"""[{start} : {end}] : {text}""")
 
 
-                    txt_path = f"{txt_directory}/output_{i + 1}.txt" 
-                    # Open the file in write mode
-                    with open(txt_path, 'w') as file:
-                        # Write the data to the file
-                        file.write(result['text'])
+                    resut_text += result_text
 
             video.close()
             col2.video(video_url)
 
 
-            concatenated_text = concatenate_txt_files(txt_directory)
+            #concatenated_text = concatenate_txt_files(txt_directory)
             #st.download_button('Download text as csv', concatenated_text)
 
             col1.download_button(
                         label=f"Download transcribe as txt",
-                        data=concatenated_text,
+                        data=result_text,
                         file_name=f'Transcribe YouTube Video {datetime.now()}.txt',
                         mime='text/plain'
                     )

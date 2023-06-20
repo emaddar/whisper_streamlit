@@ -10,6 +10,9 @@ import pyperclip
 from myfunctions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, concatenate_txt_files
 import cv2
 import glob
+from io import BytesIO
+
+result = BytesIO()
 
 st.set_page_config(layout="wide",
                    page_title='Transcribe YouTube Video',
@@ -146,10 +149,10 @@ if youtube_button or st.session_state.keep_graphics:
 
             #concatenated_text = concatenate_txt_files(txt_directory)
             #st.download_button('Download text as csv', concatenated_text)
-
+            result = result_text
             col1.download_button(
                         label=f"Download transcribe as txt",
-                        data=result_text,
+                        data=result,
                         file_name=f'Transcribe YouTube Video {datetime.now()}.txt',
                         mime='text/plain'
                     )

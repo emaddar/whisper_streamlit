@@ -52,7 +52,7 @@ def create_folder_and_directories():
     return mp4_directory, mp3_directory, txt_directory
 
 
-@st.cache_data()
+
 def download_youtube(video_url, mp4_directory):
         # Create a YouTube object
         yt = YouTube(video_url)

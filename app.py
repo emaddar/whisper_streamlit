@@ -26,7 +26,16 @@ current_directory(3)
 video_url = st.text_input('Youtube link', 'https://www.youtube.com/watch?v=8Zx04h24uBs&ab_channel=LexClips')
 youtube_button = st.button('Transcribe')
 
-if youtube_button:
+#if youtube_button:
+
+try:
+  # check if the key exists in session state
+  _ = st.session_state.keep_graphics
+except AttributeError:
+  # otherwise set it to false
+  st.session_state.keep_graphics = False
+
+if youtube_button or st.session_state.keep_graphics:
 
     mp4_directory, mp3_directory, txt_directory = create_folder_and_directories()
 

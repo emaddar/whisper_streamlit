@@ -47,15 +47,16 @@ if youtube_button:
                 
 
                 
-            with st.spinner("Transcribe YouTube Video ... "):
-                col1, col2 = st.columns(2)
+            
+            col1, col2 = st.columns(2)
 
                     
 
+            with col2:
+                st.audio(f"{mp3_directory}/my_audio.mp3")
+                st.video(video_url)
 
-                col2.audio(f"{mp3_directory}/my_audio.mp3")
-                col2.video(video_url)
-
+            with st.spinner("Transcribe YouTube Video ... "):
                 result = transcribe_mp3(mp3_directory, "my_audio") 
 
                 txt_path = f"{txt_directory}/output.txt" 
@@ -65,8 +66,8 @@ if youtube_button:
                     # Write the data to the file
                     file.write(result['text'])
 
-
-                col1.info(f"Detected language: {result['language']}")
+            with col1:
+                st.info(f"Detected language: {result['language']}")
 
 
                 
@@ -74,14 +75,14 @@ if youtube_button:
                     start = round(float(segment['start']),2)
                     end = round(float(segment['end']),2)
                     text = segment['text']
-                    col1.markdown(f"""[{start} : {end}] : {text}""")
+                    st.markdown(f"""[{start} : {end}] : {text}""")
 
                 
 
 
-                                                                                                
+                data = result['text'].to_csv(index = False).encode('utf-8')                                                                 
                 #st.download_button('Download text as csv', result['text'])
-                col1.download_button(
+                st.download_button(
                         label=f"Download data as  text as csv",
                         data=result['text'],
                         file_name=f'Transcribe YouTube Video {datetime.now()}.csv',

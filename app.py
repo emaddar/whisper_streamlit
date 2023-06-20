@@ -94,7 +94,7 @@ if youtube_button or st.session_state.keep_graphics:
 
                 
 
-
+                user_text = col1.text_area("Enter text",result['text'])
                                                                              
                 #st.download_button('Download text as csv', result['text'])
                 st.download_button(

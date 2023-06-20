@@ -7,7 +7,7 @@ import whisper
 import cv2
 import glob
 
-
+@st.cache_data()
 def current_directory(n):
     # Get the current directory
     current_directory = os.getcwd()
@@ -30,7 +30,7 @@ def current_directory(n):
 
 
 
-
+@st.cache_data()
 def create_folder_and_directories():
     # Get the current date and time
     now = datetime.now()
@@ -51,7 +51,7 @@ def create_folder_and_directories():
     return mp4_directory, mp3_directory, txt_directory
 
 
-
+@st.cache_data()
 def download_youtube(video_url, mp4_directory):
         # Create a YouTube object
         yt = YouTube(video_url)
@@ -64,7 +64,7 @@ def download_youtube(video_url, mp4_directory):
 
 
 
-
+@st.cache_data()
 def rename_video(mp4_directory):
     # Get a list of all files in the directory
     files = os.listdir(mp4_directory)
@@ -87,7 +87,7 @@ def rename_video(mp4_directory):
             os.rename(current_path, new_path)
 
 
-
+@st.cache_data()
 def rename_videos(mp4_directory):
     # Get a list of all files in the directory
     files = os.listdir(mp4_directory)
@@ -120,7 +120,7 @@ def rename_videos(mp4_directory):
         # No files in the directory
         print("No files found in the directory.")
 
-
+@st.cache_data()
 def mp4_to_mp3(mp4_directory, mp3_directory):
      # Load the video file
     video = VideoFileClip(f"{mp4_directory}/video.mp4")
@@ -136,7 +136,7 @@ def mp4_to_mp3(mp4_directory, mp3_directory):
     audio.close()
 
 
-
+@st.cache_data()
 def transcribe_mp3(mp3_directory, my_audio):
     model = whisper.load_model("tiny")
     result = model.transcribe(f"{mp3_directory}/{my_audio}.mp3")
@@ -148,7 +148,7 @@ def transcribe_mp3(mp3_directory, my_audio):
 
 
 
-
+@st.cache_data()
 def cut_and_convert_to_mp3(filename, mp3_directory, txt_directory):
     video = VideoFileClip(filename)
     duration = video.duration
@@ -180,7 +180,7 @@ def cut_and_convert_to_mp3(filename, mp3_directory, txt_directory):
 
 
 
-
+@st.cache_data()
 def with_opencv(filename):
     video = cv2.VideoCapture(filename)
 
@@ -197,7 +197,7 @@ def with_opencv(filename):
 
 
 
-
+@st.cache_data()
 def concatenate_txt_files(directory):
     # Get a list of all text files in the directory
     txt_files = glob.glob(os.path.join(directory, "*.txt"))

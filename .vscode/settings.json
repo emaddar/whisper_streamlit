@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "ipynb",
         "streamlit",
-        "readme"
+        "readme",
+        "MP3 Page"
     ]
 }

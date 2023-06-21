@@ -162,3 +162,13 @@ if youtube_button or st.session_state.keep_graphics:
 
 
 
+
+for i in range(20):
+    st.write("")
+
+st.markdown("""
+----
+**Contact** :
+
+If you have any questions, suggestions or bug to report, you can contact me via my email: [e.a.darwich@gmail.com](https://www.linkedin.com/in/e-darwich/)
+""")

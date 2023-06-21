@@ -11,4 +11,6 @@ pandas
 pyperclip
 #openai-whisper
 opencv-python
+mutagen
+pydub
 git+https://github.com/openai/whisper.git 

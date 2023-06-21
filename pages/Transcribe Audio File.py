@@ -92,7 +92,7 @@ if audio_file is not None:
                                                                                 
                     #st.download_button('Download text as csv', result['text'])
                     st.download_button(
-                            label=f"Download transcribe as txt",
+                            label=f"Download as txt",
                             data=result['text'],
                             file_name=f'Transcribe Audio {datetime.now()}.txt',
                             mime='text/plain'
@@ -153,7 +153,7 @@ if audio_file is not None:
                 user_text = col1.text_area("The Complete Text",result, height=400)
         
                 col1.download_button(
-                            label=f"Download transcribe as txt",
+                            label=f"Download as txt",
                             data=result,
                             file_name=f'Transcribe Audio {datetime.now()}.txt',
                             mime='text/plain'

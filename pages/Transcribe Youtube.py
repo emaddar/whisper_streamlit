@@ -98,7 +98,7 @@ if youtube_button or st.session_state.keep_graphics:
                                                                              
                 #st.download_button('Download text as csv', result['text'])
                 st.download_button(
-                        label=f"Download transcribe as txt",
+                        label=f"Download as txt",
                         data=result['text'],
                         file_name=f'Transcribe YouTube Video {datetime.now()}.txt',
                         mime='text/plain'
@@ -153,7 +153,7 @@ if youtube_button or st.session_state.keep_graphics:
             user_text = col1.text_area("The Complete Text",result, height=400)
       
             col1.download_button(
-                        label=f"Download transcribe as txt",
+                        label=f"Download as txt",
                         data=result,
                         file_name=f'Transcribe YouTube Video {datetime.now()}.txt',
                         mime='text/plain'

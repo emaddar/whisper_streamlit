@@ -55,7 +55,7 @@ if audio_file is not None:
 
 
         
-        st.write(duration)
+        
         if duration < 300 :# 5 minutes             
                 
                 col1, col2 = st.columns(2)

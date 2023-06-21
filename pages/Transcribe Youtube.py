@@ -14,13 +14,12 @@ from io import BytesIO
 
 result = BytesIO()
 
-st.set_page_config(
-                   page_title='Audio2Texte',
-                   page_icon=':video_camera:'
-                )
+st.set_page_config(layout="wide",
+                   page_title='Transcribe YouTube Video',
+                   page_icon=':video_camera:')
 
 
-st.header('Audio2Texte')
+st.header('Transcribe YouTube Video :video_camera:')
 
 
 

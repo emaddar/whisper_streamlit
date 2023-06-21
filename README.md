@@ -41,4 +41,4 @@ streamlit run app.py
 ## Contributing
 Contributions to this project are welcome. Feel free to open issues or submit pull requests for any improvements or fixes you would like to contribute.
 
-![](youtube2text-1.png)
+![](youtube2text.png)

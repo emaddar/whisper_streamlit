@@ -7,6 +7,8 @@ import whisper
 import cv2
 import glob
 import streamlit as st
+import yt_dlp
+
 
 
 def current_directory(n):
@@ -63,6 +65,69 @@ def download_youtube(video_url, mp4_directory):
         # Download the video
         stream.download(mp4_directory)  
 
+        return "mp4"
+
+
+
+
+
+
+
+
+# https://gist.github.com/space-pope/977b0d15cf01932332014194fc80c1f0
+def download_youtube1(video_url, download_path):
+  # times in seconds
+  # start = 3.0
+  # end = 5.0
+
+  # ffmpeg_args = {
+  #   # - Don't forget the _i after "ffmpeg"; this puts the arguments before ffmpeg's `-i` argument,
+  #   #   thus short-circuiting the download itself. Fail to do that,
+  #   #   and you might as well skip ffmpeg for the download and trim in post-processing.
+  #   # - Note that the arguments are pre-parsed into a list, like you'd pass to `subprocess.run`.
+  #   "ffmpeg_i": ["-ss", str(start), "-to", str(end)]  
+  # }
+
+  opts = {
+    "external_downloader": "ffmpeg",
+    #"external_downloader_args": ffmpeg_args,
+    # though not required, I'm including the subtitles options here for a reason; see below
+    "writesubtitles": False,
+    "writeautomaticsub": False,
+    # to suppress ffmpeg's stdout output
+    "quiet": True,
+    "outtmpl": download_path + "/%(title)s.%(ext)s"
+  }
+
+  with yt_dlp.YoutubeDL(opts) as ydl:
+    ydl.download(video_url)
+    
+    # If you want WebVTT captions, yt-dlp will fail to download them if you're using ffmpeg.
+    # This isn't ffmpeg's fault; it's because yt-dlp (as of this writing) forces ffmpeg to use
+    # the stream copy encoder (look for `args += ['-c', 'copy']` in downloader/external.py).
+    # yt-dlp hosts their own builds of ffmpeg, and one of them supposedly fixes this problem
+    # by ignoring certain WebVTT header lines, but why would you want to install a custom build
+    # to download a less informative version of the caption files?
+    # Anyway, we can't get around this with any other options that I've found, 
+    # so we'll run a second download to get captions.
+    
+    # Note that you can create a new YouTubeDL instance with a new options dictionary, but the
+    # constructor is a bit expensive, so I'm including an example of reusing a built instance
+    # for kicks. This dictionary tweaking is likely best separated out into its own function.
+    # opts = {
+    #   **ydl.params,
+    #   "external_downloader": "native",
+    #   "external_downloader_args": {},
+    #   "writesubtitles": True,
+    #   # if you also want automatically generated captions/subtitles
+    #   "writeautomaticsub": True,
+    #   # so we only get the captions and don't download the (whole) video again
+    #   "skip_download": True,
+    # }
+    # ydl.params = opts
+    ydl.download(video_url)
+
+    return "webm"
 
 
 
@@ -100,9 +165,9 @@ def rename_videos(mp4_directory):
         print("No files found in the directory.")
 
 
-def mp4_to_mp3(mp4_directory, mp3_directory):
+def mp4_to_mp3(mp4_directory, video_extension, mp3_directory):
      # Load the video file
-    video = VideoFileClip(f"{mp4_directory}/video.mp4")
+    video = VideoFileClip(f"{mp4_directory}/video.{video_extension}")
 
     # Extract the audio from the video file
     audio = video.audio

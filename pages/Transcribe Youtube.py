@@ -7,7 +7,7 @@ from moviepy.editor import VideoFileClip
 import whisper
 import pandas as pd
 import pyperclip
-from myfunctions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, concatenate_txt_files
+from myfunctions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, download_youtube1
 import cv2
 import glob
 from io import BytesIO
@@ -46,11 +46,19 @@ if youtube_button or st.session_state.keep_graphics:
     mp4_directory, mp3_directory, txt_directory = create_folder_and_directories()
 
     with st.spinner("Download Youtube as MP4"):
-        download_youtube(video_url, mp4_directory)
+
+        try:
+            video_extension = download_youtube(video_url, mp4_directory)
+
+        except:
+            with st.spinner("Please wait, the application is currently unable to download the video in MP4 format. It is currently attempting to download the video in WebM format instead. This process may take some time. Thank you for your patience."):
+                video_extension= download_youtube1(video_url, mp4_directory)
 
 
         rename_videos(mp4_directory)
-        video_mp4 = os.path.join(mp4_directory, "video.mp4")
+        video_mp4 = os.path.join(mp4_directory, f"video.{video_extension}")
+        
+
     # Check the duration of the video in seconds
     duration = with_opencv(video_mp4)
     if duration < 300 :# 5 minutes
@@ -58,7 +66,7 @@ if youtube_button or st.session_state.keep_graphics:
             with st.spinner("Convert MP4 to MP3"):
         
                 
-                mp4_to_mp3(mp4_directory, mp3_directory)
+                mp4_to_mp3(mp4_directory, video_extension, mp3_directory, )
                 
 
                 

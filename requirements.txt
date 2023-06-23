@@ -13,4 +13,5 @@ pyperclip
 opencv-python
 mutagen
 pydub
+yt_dlp
 git+https://github.com/openai/whisper.git 

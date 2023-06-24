@@ -7,7 +7,8 @@ from moviepy.editor import VideoFileClip
 import whisper
 import pandas as pd
 import pyperclip
-from myfunctions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, concatenate_txt_files
+from myfunctions import current_directory, create_folder_and_directories, transcribe_mp3
+from myaudiofunctions import convert_to_mp3
 import cv2
 import glob
 from io import BytesIO
@@ -41,17 +42,30 @@ except AttributeError:
 
 # Specify the YouTube video URL
 # video_url = st.text_input('Youtube link', 'https://www.youtube.com/watch?v=8Zx04h24uBs&ab_channel=LexClips')
-audio_file = st.file_uploader("Upload an audio file", type=["mp3"])
+audio_file = st.file_uploader("Upload an audio file", type=["mp3", "wav", "aac"])
+
 
 if audio_file is not None:
+    file_extension = os.path.splitext(audio_file.name)[1][1:].lower()
+    
+
+
     youtube_button = st.button('Transcribe')
 
     if youtube_button or st.session_state.keep_graphics:
-        
-        audio_mp3 = MP3(audio_file)
-        duration = audio_mp3.info.length
 
         mp4_directory, mp3_directory, txt_directory = create_folder_and_directories()
+
+
+        audio = AudioSegment.from_file(audio_file)
+        audio.export(f"{mp3_directory}/my_audio.mp3", format="mp3")
+        
+        audio = f"{mp3_directory}/my_audio.mp3"
+        audio_mp3 = MP3(audio)
+        duration = audio_mp3.info.length
+       
+
+        
 
 
         
@@ -60,11 +74,11 @@ if audio_file is not None:
                 
                 col1, col2 = st.columns(2)
                 
-                col2.audio(audio_file)
+                col2.audio(f"{mp3_directory}/my_audio.mp3")
                 
                 # Save the segment as an MP3 file
-                audio_file = AudioSegment.from_file(audio_file)
-                audio_file.export(f"{mp3_directory}/my_audio.mp3", format="mp3")
+                # audio = AudioSegment.from_file(audio)
+                # audio.export(f"{mp3_directory}/my_audio.{file_extension}", format="mp3")
                 with st.spinner("Transcribe Audio ... "):
                         result = transcribe_mp3(mp3_directory, "my_audio") 
         
@@ -105,9 +119,6 @@ if audio_file is not None:
                 col1, col2 = st.columns(2)
 
 
-                audio = AudioSegment.from_file(audio_file)
-                duration = len(audio) / 1000  # Convert to seconds
-
                 # Calculate the number of 5-minute segments
                 num_segments = int(duration // 300) + 1
                 result_text = ''
@@ -117,10 +128,11 @@ if audio_file is not None:
                 for i in range(num_segments):
                     # Set the start and end times for the segment
                     start_time = i * 300 * 1000  # 5 minutes (converted to milliseconds)
-                    end_time = min((i + 1) * 300 * 1000, len(audio))  # 5 minutes or remainder of the audio
+                    end_time = min((i + 1) * 300 * 1000, duration*1000)  # 5 minutes or remainder of the audio
 
+                    audio_mp3 = AudioSegment.from_file(f"{mp3_directory}/my_audio.mp3")
                     # Extract the segment
-                    segment = audio[start_time:end_time]
+                    segment = audio_mp3[start_time:end_time]
 
                     # Set the output filename for the segment
                     output_filename = f"segment_{i + 1}"

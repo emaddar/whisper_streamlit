@@ -13,6 +13,10 @@ key1 = st.secrets["key1"]
 key2 = st.secrets["key2"]
 endpoint = st.secrets["endpoint"]
 
+key1=st.secrets.my_credentials.key1,
+key2=st.secrets.my_credentials.key2,
+endpoint=st.secrets.my_credentials.endpoint,
+SECRET_KEY=st.secrets.my_credentials.SECRET_KEY,
 
 
 

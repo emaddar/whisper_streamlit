@@ -7,8 +7,8 @@ from moviepy.editor import VideoFileClip
 import whisper
 import pandas as pd
 import pyperclip
-from myfunctions import current_directory, create_folder_and_directories, transcribe_mp3
-from myaudiofunctions import convert_to_mp3
+from my_functions import current_directory, create_folder_and_directories, transcribe_mp3
+from my_audio_functions import convert_to_mp3
 import cv2
 import glob
 from io import BytesIO

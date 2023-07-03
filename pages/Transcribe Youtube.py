@@ -7,7 +7,8 @@ from moviepy.editor import VideoFileClip
 import whisper
 import pandas as pd
 import pyperclip
-from myfunctions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, download_youtube1
+from my_functions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, download_youtube1
+from my_summarization_functions import sample_extractive_summarization
 import cv2
 import glob
 from io import BytesIO
@@ -158,6 +159,14 @@ if youtube_button or st.session_state.keep_graphics:
             #concatenated_text = concatenate_txt_files(txt_directory)
             #st.download_button('Download text as csv', concatenated_text)
             result = result_text
+
+            txt_path = f"{txt_directory}/output.txt" 
+    
+            # Open the file in write mode
+            with open(txt_path, 'w') as file:
+                # Write the data to the file
+                file.write(result)
+
             user_text = col1.text_area("The Complete Text",result, height=400)
       
             col1.download_button(
@@ -168,8 +177,16 @@ if youtube_button or st.session_state.keep_graphics:
                     )
 
 
+    txt_path = f"{txt_directory}/output.txt" 
+    file = open(txt_path, "r")
+    # Read the contents of the file
+    file_contents = file.read()
 
+    # Close the file
+    file.close()
 
+    st.text_area("The Complete Text",sample_extractive_summarization(list(file_contents)), height=400)
+    st.write()
 
 for i in range(20):
     st.write("")

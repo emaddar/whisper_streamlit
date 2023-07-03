@@ -184,7 +184,7 @@ def mp4_to_mp3(mp4_directory, video_extension, mp3_directory):
 def transcribe_mp3(mp3_directory, my_audio):
     model = whisper.load_model("tiny")
     result = model.transcribe(f"{mp3_directory}/{my_audio}.mp3")
-    print(result["text"])
+    #print(result["text"])
     return result
 
 

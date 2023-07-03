@@ -7,8 +7,9 @@ from moviepy.editor import VideoFileClip
 import whisper
 import pandas as pd
 import pyperclip
-from myfunctions import current_directory, create_folder_and_directories, transcribe_mp3
-from myaudiofunctions import convert_to_mp3
+from my_functions import current_directory, create_folder_and_directories, transcribe_mp3
+from my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
+from my_audio_functions import convert_to_mp3
 import cv2
 import glob
 from io import BytesIO
@@ -20,6 +21,14 @@ result = BytesIO()
 st.set_page_config(layout="wide",
                    page_title='Transcribe Audio',
                    page_icon='	:loud_sound:')
+
+# make any grid with a function
+def make_grid(cols,rows):
+    grid = [0]*cols
+    for i in range(cols):
+        with st.container():
+            grid[i] = st.columns(rows)
+    return grid
 
 
 st.header('Transcribe MP3 	:loud_sound:')
@@ -102,16 +111,16 @@ if audio_file is not None:
 
                     
 
-                    user_text = col1.text_area("The Complete Text",result['text'], height=400)
-                                                                                
-                    #st.download_button('Download text as csv', result['text'])
-                    st.download_button(
-                            label=f"Download as txt",
-                            data=result['text'],
-                            file_name=f'Transcribe Audio {datetime.now()}.txt',
-                            mime='text/plain'
-                        )
-            
+                user_text = st.text_area("The Complete Text",result['text'], height=400)
+                                                                            
+                #st.download_button('Download text as csv', result['text'])
+                st.download_button(
+                        label=f"Download as txt",
+                        data=result['text'],
+                        file_name=f'Transcribe Audio {datetime.now()}.txt',
+                        mime='text/plain'
+                    )
+        
 
         else:
                 
@@ -162,7 +171,16 @@ if audio_file is not None:
                 #concatenated_text = concatenate_txt_files(txt_directory)
                 #st.download_button('Download text as csv', concatenated_text)
                 result = result_text
-                user_text = col1.text_area("The Complete Text",result, height=400)
+
+
+                txt_path = f"{txt_directory}/output.txt" 
+        
+                # Open the file in write mode
+                with open(txt_path, 'w') as file:
+                    # Write the data to the file
+                    file.write(result)
+
+                user_text = st.text_area("The Complete Text",result, height=400)
         
                 col1.download_button(
                             label=f"Download as txt",
@@ -171,6 +189,21 @@ if audio_file is not None:
                             mime='text/plain'
                         )
 
+        txt_path = f"{txt_directory}/output.txt" 
+        file = open(txt_path, "r")
+        # Read the contents of the file
+        file_contents = file.read()
+
+        # Close the file
+        file.close()
+        
+        # st.text_area("The Summarized Text",sample_extractive_summarization([file_contents]), height=400)
+        # #st.text_area("The Summarized Text",file_contents, height=400)
+        # st.write()
+
+        mygrid0 = make_grid(1,2)
+        mygrid0[0][0].text_area("Extractive Summarization",sample_extractive_summarization([file_contents]), height=400)
+        mygrid0[0][1].text_area("Abstractive Summarization",sample_abstractive_summarization([file_contents]), height=400)
 
 
 

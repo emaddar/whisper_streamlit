@@ -8,7 +8,7 @@ import whisper
 import pandas as pd
 import pyperclip
 from my_functions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, download_youtube1
-from my_summarization_functions import sample_extractive_summarization
+from my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
 import cv2
 import glob
 from io import BytesIO
@@ -18,6 +18,14 @@ result = BytesIO()
 st.set_page_config(layout="wide",
                    page_title='Transcribe YouTube Video',
                    page_icon=':video_camera:')
+
+# make any grid with a function
+def make_grid(cols,rows):
+    grid = [0]*cols
+    for i in range(cols):
+        with st.container():
+            grid[i] = st.columns(rows)
+    return grid
 
 
 st.header('Transcribe YouTube Video :video_camera:')
@@ -103,16 +111,16 @@ if youtube_button or st.session_state.keep_graphics:
 
                 
 
-                user_text = col1.text_area("The Complete Text",result['text'], height=400)
-                                                                             
-                #st.download_button('Download text as csv', result['text'])
-                st.download_button(
-                        label=f"Download as txt",
-                        data=result['text'],
-                        file_name=f'Transcribe YouTube Video {datetime.now()}.txt',
-                        mime='text/plain'
-                    )
-        
+            user_text = st.text_area("The Complete Text",result['text'], height=400)
+                                                                            
+            #st.download_button('Download text as csv', result['text'])
+            st.download_button(
+                    label=f"Download as txt",
+                    data=result['text'],
+                    file_name=f'Transcribe YouTube Video {datetime.now()}.txt',
+                    mime='text/plain'
+                )
+    
 
     else:
             
@@ -167,7 +175,7 @@ if youtube_button or st.session_state.keep_graphics:
                 # Write the data to the file
                 file.write(result)
 
-            user_text = col1.text_area("The Complete Text",result, height=400)
+            user_text = st.text_area("The Complete Text",result, height=400)
       
             col1.download_button(
                         label=f"Download as txt",
@@ -184,9 +192,14 @@ if youtube_button or st.session_state.keep_graphics:
 
     # Close the file
     file.close()
+    
+    # st.text_area("The Summarized Text",sample_extractive_summarization([file_contents]), height=400)
+    # #st.text_area("The Summarized Text",file_contents, height=400)
+    # st.write()
 
-    st.text_area("The Complete Text",sample_extractive_summarization(list(file_contents)), height=400)
-    st.write()
+    mygrid0 = make_grid(1,2)
+    mygrid0[0][0].text_area("Extractive Summarization",sample_extractive_summarization([file_contents]), height=400)
+    mygrid0[0][1].text_area("Abstractive Summarization",sample_abstractive_summarization([file_contents]), height=400)
 
 for i in range(20):
     st.write("")

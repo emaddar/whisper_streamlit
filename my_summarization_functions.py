@@ -9,6 +9,9 @@ key1 = os.getenv('key1')
 key2 = os.getenv('key2')
 endpoint = os.getenv('endpoint')
 
+
+
+
 # Authenticate the client using your key and endpoint 
 def authenticate_client():
     ta_credential = AzureKeyCredential(key1)

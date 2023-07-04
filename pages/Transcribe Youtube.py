@@ -1,16 +1,12 @@
 import streamlit as st
 import os
-import shutil
-from datetime import datetime, timedelta
+from datetime import datetime
 from pytube import YouTube
 from moviepy.editor import VideoFileClip
-import whisper
 import pandas as pd
-import pyperclip
-from my_functions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, download_youtube1
+from my_functions import remove_directories, create_folder_and_directories, download_youtube_pytube, rename_videos, mp4_to_mp3, transcribe_mp3, download_youtube_ffmpeg
+
 from my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
-import cv2
-import glob
 from io import BytesIO
 
 result = BytesIO()
@@ -20,34 +16,23 @@ st.set_page_config(layout="wide",
                    page_icon=':video_camera:')
 
 # make any grid with a function
-def make_grid(cols,rows):
-    grid = [0]*cols
-    for i in range(cols):
+def make_grid(n_cols,n_rows):
+    grid = [0]*n_cols
+    for i_col in range(n_cols):
         with st.container():
-            grid[i] = st.columns(rows)
+            grid[i_col] = st.columns(n_rows)
     return grid
 
 
 st.header('Transcribe YouTube Video :video_camera:')
 
+remove_directories(3)
 
-
-current_directory(3)
-
-
-
-#if youtube_button:
-
-try:
-  # check if the key exists in session state
-  _ = st.session_state.keep_graphics
-except AttributeError:
-  # otherwise set it to false
-  st.session_state.keep_graphics = False
 
 
 # Specify the YouTube video URL
-video_url = st.text_input('Youtube link', 'https://www.youtube.com/watch?v=8Zx04h24uBs&ab_channel=LexClips')
+url_default = 'https://www.youtube.com/watch?v=8Zx04h24uBs&ab_channel=LexClips'
+video_url = st.text_input('Youtube link', url_default)
 youtube_button = st.button('Transcribe')
 
 if youtube_button or st.session_state.keep_graphics:
@@ -57,12 +42,15 @@ if youtube_button or st.session_state.keep_graphics:
     with st.spinner("Download Youtube as MP4"):
 
         try:
-            video_extension = download_youtube(video_url, mp4_directory)
+            video_extension = download_youtube_pytube(video_url, mp4_directory)
 
         except:
             with st.spinner("Please wait, the application is currently unable to download the video in MP4 format. It is currently attempting to download the video in WebM format instead. This process may take some time. Thank you for your patience."):
-                video_extension,duration= download_youtube1(video_url, mp4_directory)
+                duration= download_youtube_ffmpeg(video_url, mp4_directory)
                 # duration= download_youtube1(video_url, mp4_directory)
+        finally:
+             video_extension = # Split the current filename and extension
+            name, extension = os.path.splitext(filename)
 
 
         rename_videos(mp4_directory)

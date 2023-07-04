@@ -1,17 +1,15 @@
 import os
 import shutil
-from datetime import datetime, timedelta
+from datetime import datetime
 from pytube import YouTube
 from moviepy.editor import VideoFileClip
 import whisper
-import cv2
 import glob
-import streamlit as st
 import yt_dlp
 
 
 
-def current_directory(n):
+def remove_directories(n):
     # Get the current directory
     current_directory = os.getcwd()
     # Get a list of all directories in the current directory
@@ -28,7 +26,6 @@ def current_directory(n):
             print(f"Removed directory: {directory_path}")
     else:
         print("There are not enough matching directories to remove.")
-
 
 
 
@@ -53,54 +50,36 @@ def create_folder_and_directories():
 
 
 
-def download_youtube(video_url, mp4_directory):
+def download_youtube_pytube(video_url, mp4_directory):
     # Create a YouTube object
     yt = YouTube(video_url)
     # Get the lowest resolution video stream
     stream = yt.streams.get_lowest_resolution()
     # Download the video
-    stream.download(mp4_directory)  
-    return "mp4"
+    stream.download(mp4_directory)
 
 
 
 # https://gist.github.com/space-pope/977b0d15cf01932332014194fc80c1f0
-def download_youtube1(video_url, download_path):
-
-  opts = {
-    "external_downloader": "ffmpeg",
-    #"external_downloader_args": ffmpeg_args,
-    # though not required, I'm including the subtitles options here for a reason; see below
-    "writesubtitles": False,
-    "writeautomaticsub": False,
-    # to suppress ffmpeg's stdout output
-    "quiet": True,
-    "outtmpl": download_path + "/%(title)s.%(ext)s"
-  }
-
-  with yt_dlp.YoutubeDL(opts) as ydl:
-    ydl.download(video_url)
-    info = ydl.extract_info(video_url, download=False)
-    duration = info.get("duration")
-    return "webm",duration
-  
-def download_youtube2(video_url, download_path):
+def download_youtube_ffmpeg(video_url, download_path):
     opts = {
         "external_downloader": "ffmpeg",
-        #"external_downloader_args": ffmpeg_args,
-        # though not required, I'm including the subtitles options here for a reason; see below
         "writesubtitles": False,
         "writeautomaticsub": False,
-        # to suppress ffmpeg's stdout output
         "quiet": True,
         "outtmpl": download_path + "/%(title)s.%(ext)s"
     }
 
     with yt_dlp.YoutubeDL(opts) as ydl:
         ydl.download(video_url)
+
+
+def extract_video_duration(video_url):
+    with yt_dlp.YoutubeDL() as ydl:
         info = ydl.extract_info(video_url, download=False)
         duration = info.get("duration")
         return duration
+
 
 
 

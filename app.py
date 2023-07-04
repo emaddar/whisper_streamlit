@@ -1,17 +1,6 @@
 import streamlit as st
-import os
-import shutil
-from datetime import datetime, timedelta
-from pytube import YouTube
-from moviepy.editor import VideoFileClip
-import whisper
-import pandas as pd
-import pyperclip
-from myfunctions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, concatenate_txt_files
-import cv2
-import glob
 from io import BytesIO
-import base64
+
 
 result = BytesIO()
 

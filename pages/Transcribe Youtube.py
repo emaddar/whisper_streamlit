@@ -70,7 +70,7 @@ if youtube_button or st.session_state.keep_graphics:
         # video_mp4 = os.path.join(mp4_directory, "video.webm")
 
     # Check the duration of the video in seconds
-    if duration < 300 :# 5 minutes
+    if duration < 180 :# 3 minutes
             
             with st.spinner("Convert MP4 to MP3"):
         
@@ -86,7 +86,7 @@ if youtube_button or st.session_state.keep_graphics:
 
             
             col2.audio(f"{mp3_directory}/my_audio.mp3")
-            col2.video(video_url)
+            
 
             with st.spinner("Transcribe YouTube Video ... "):
                     result = transcribe_mp3(mp3_directory, "my_audio") 
@@ -98,6 +98,7 @@ if youtube_button or st.session_state.keep_graphics:
                         # Write the data to the file
                         file.write(result['text'])
 
+            WebVTT = "WEBVTT"
             with col1:
                 st.info(f"Detected language: {result['language']}")
 
@@ -107,11 +108,17 @@ if youtube_button or st.session_state.keep_graphics:
                     start = round(float(segment['start']),2)
                     end = round(float(segment['end']),2)
                     text = segment['text']
-                    st.markdown(f"""[{start} : {end}] : {text}""")
+                    WebVTT += f""" \n[{start} : {end}] : {text}"""
+                
+
+                user_text = st.text_area("The Complete Text",result['text'], height=450)
+            
+            with st.expander("WebVTT"):
+                    st.text_area("Format Web Video Text Tracks (WebVTT)", WebVTT, height=200)
 
                 
 
-            user_text = st.text_area("The Complete Text",result['text'], height=400)
+            col2.video(video_url)
                                                                             
             #st.download_button('Download text as csv', result['text'])
             st.download_button(
@@ -124,22 +131,23 @@ if youtube_button or st.session_state.keep_graphics:
 
     else:
             
-            st.warning(f'The duration of the video exceeds 5 minutes ({round(duration/60,2)} minutes). To handle this, the application will divide the video into multiple 5-minute segments and convert each segment into an MP3 file. ', icon="⚠️")
+            st.warning(f'The duration of the video exceeds 3 minutes ({round(duration/60,2)} minutes). To handle this, the application will divide the video into multiple 3-minute segments and convert each segment into an MP3 file. ', icon="⚠️")
             col1, col2 = st.columns(2)
 
                     
             video = VideoFileClip(video_mp4)
             duration = video.duration
 
-            # Calculate the number of 5-minute segments
-            num_segments = int(duration // 300) + 1
+            # Calculate the number of 3-minute segments
+            num_segments = int(duration // 180) + 1
             result_text = ''
+            WebVTT = "WEBVTT"
             for i in range(num_segments):
                 
                     # Set the start and end times for the segment
-                    start_time = i * 300  # 5 minutes
-                    end_time = min((i + 1) * 300, duration)  # 5 minutes or remainder of the video
-                    with st.spinner(f"Cut MP3 from : {start_time} sec. to {end_time} sec."):
+                    start_time = i * 180  # 3 minutes
+                    end_time = min((i + 1) * 180, duration)  # 3 minutes or remainder of the video
+                    with st.spinner(f"Please wait ..."):
                         # Extract the segment and convert to MP3
                         segment = video.subclip(start_time, end_time)
                         output_filename = f"{mp3_directory}/segment_{i + 1}.mp3"
@@ -148,17 +156,23 @@ if youtube_button or st.session_state.keep_graphics:
                         col2.audio(f"{mp3_directory}/segment_{i + 1}.mp3")
 
 
-                    with st.spinner(f"Transcribe MP3 from : {start_time} sec. to {end_time} sec."):
+                    with st.spinner(f"Transcribe from : {round(start_time/60,2)} min. to {round(end_time/60,2)} min."):
                         result = transcribe_mp3(mp3_directory, f"segment_{i + 1}")
-                
+                    col1.write(f"Transcribe from : {round(start_time/60,2)} min. to {round(end_time/60,2)} min. : OK")
                     for segment in result['segments']:
                         start = round(float(segment['start']),2)
                         end = round(float(segment['end']),2)
                         text = segment['text']
-                        col1.markdown(f"""[{start} : {end}] : {text}""")
+                        #col1.markdown(f"""[{start} : {end}] : {text}""")
+                        WebVTT += f""" \n[{start} : {end}] : {text}"""
 
 
                     result_text = result_text + result['text'] + " "
+
+            with col1:
+                st.info(f"Detected language: {result['language']}")
+                
+            
 
             video.close()
             col2.video(video_url)
@@ -175,7 +189,9 @@ if youtube_button or st.session_state.keep_graphics:
                 # Write the data to the file
                 file.write(result)
 
-            user_text = st.text_area("The Complete Text",result, height=400)
+            user_text = col1.text_area("The Complete Text",result, height=450)
+            with st.expander("WebVTT"):
+                    st.text_area("Format Web Video Text Tracks (WebVTT)", WebVTT, height=200)
       
             col1.download_button(
                         label=f"Download as txt",
@@ -198,8 +214,14 @@ if youtube_button or st.session_state.keep_graphics:
     # st.write()
 
     mygrid0 = make_grid(1,2)
-    mygrid0[0][0].text_area("Extractive Summarization",sample_extractive_summarization([file_contents]), height=400)
-    mygrid0[0][1].text_area("Abstractive Summarization",sample_abstractive_summarization([file_contents]), height=400)
+    with mygrid0[0][0]:
+        with st.spinner("Extractive Summarization ..."):
+            extractive_summarization = sample_extractive_summarization([file_contents])
+        st.text_area("Extractive Summarization", extractive_summarization, height=200)
+    with mygrid0[0][1]:
+        with st.spinner("Abstractive Summarization ..."):
+            abstractive_summarization = sample_abstractive_summarization([file_contents])
+        st.text_area("Abstractive Summarization", abstractive_summarization, height=200)
 
 for i in range(20):
     st.write("")

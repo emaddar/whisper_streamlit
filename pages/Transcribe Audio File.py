@@ -18,6 +18,7 @@ from pydub import AudioSegment
 
 result = BytesIO()
 
+
 st.set_page_config(layout="wide",
                    page_title='Transcribe Audio',
                    page_icon='	:loud_sound:')

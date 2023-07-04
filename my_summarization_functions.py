@@ -4,10 +4,13 @@ from azure.ai.textanalytics import TextAnalyticsClient
 from dotenv import load_dotenv
 import os
 import streamlit as st
-load_dotenv()
-key1 = os.getenv('key1')
-key2 = os.getenv('key2')
-endpoint = os.getenv('endpoint')
+# load_dotenv()
+# key1 = os.getenv('key1')
+# key2 = os.getenv('key2')
+# endpoint = os.getenv('endpoint')
+key1 = st.secrets["key1"]
+key2 = st.secrets["key2"]
+endpoint = st.secrets["endpoint"]
 
 
 

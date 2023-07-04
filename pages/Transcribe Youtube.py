@@ -61,26 +61,26 @@ if youtube_button or st.session_state.keep_graphics:
 
         except:
             with st.spinner("Please wait, the application is currently unable to download the video in MP4 format. It is currently attempting to download the video in WebM format instead. This process may take some time. Thank you for your patience."):
-                video_extension= download_youtube1(video_url, mp4_directory)
+                video_extension,duration= download_youtube1(video_url, mp4_directory)
+                # duration= download_youtube1(video_url, mp4_directory)
 
 
         rename_videos(mp4_directory)
         video_mp4 = os.path.join(mp4_directory, f"video.{video_extension}")
-        
+        # video_mp4 = os.path.join(mp4_directory, "video.webm")
 
     # Check the duration of the video in seconds
-    duration = with_opencv(video_mp4)
     if duration < 300 :# 5 minutes
             
             with st.spinner("Convert MP4 to MP3"):
         
                 
-                mp4_to_mp3(mp4_directory, video_extension, mp3_directory, )
+                mp4_to_mp3(mp4_directory, video_extension, mp3_directory )
                 
 
                 
             
-            col1, col2 = st.columns(2)
+            col1, col2 = st.columns(2)   
 
                     
 

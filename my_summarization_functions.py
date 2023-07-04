@@ -5,19 +5,9 @@ from dotenv import load_dotenv
 import os
 import streamlit as st
 load_dotenv()
-# key1 = os.getenv('key1')
-# key2 = os.getenv('key2')
-# endpoint = os.getenv('endpoint')
-
-key1 = st.secrets["key1"]
-key2 = st.secrets["key2"]
-endpoint = st.secrets["endpoint"]
-
-key1=st.secrets.my_credentials.key1,
-key2=st.secrets.my_credentials.key2,
-endpoint=st.secrets.my_credentials.endpoint,
-SECRET_KEY=st.secrets.my_credentials.SECRET_KEY,
-
+key1 = os.getenv('key1')
+key2 = os.getenv('key2')
+endpoint = os.getenv('endpoint')
 
 
 

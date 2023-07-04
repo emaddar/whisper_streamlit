@@ -180,3 +180,4 @@ def concatenate_txt_files(directory):
             concatenated_text += text
 
     return concatenated_text
+

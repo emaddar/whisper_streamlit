@@ -15,13 +15,7 @@ st.set_page_config(layout="wide",
                    page_title='Transcribe YouTube Video',
                    page_icon=':video_camera:')
 
-# make any grid with a function
-def make_grid(n_cols,n_rows):
-    grid = [0]*n_cols
-    for i_col in range(n_cols):
-        with st.container():
-            grid[i_col] = st.columns(n_rows)
-    return grid
+
 
 
 st.header('Transcribe YouTube Video :video_camera:')

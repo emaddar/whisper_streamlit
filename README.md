@@ -41,9 +41,9 @@ streamlit run app.py
 
 5. You can listen to the audio and watch the video alongside the transcribed text.
 
-![](youtube2text.png)
+![](images/youtube2text.png)
 
-![](mp3_2_text.png)
+![](images/mp3_2_text.png)
 
 ---
 
@@ -51,15 +51,12 @@ streamlit run app.py
 - `28/06/2023` **Transcribe Audio Files**: You can now select your audio file (.mp3, .wav, .aac) and the application will transcribe it for you.
 
 - `04/07/2023` **WebVTT Transcription**: The application now includes an expander feature where you can find the transcription in Web Video Text Tracks (WebVTT) format. This format allows you to easily integrate the transcribed text into web-based video players or platforms that support WebVTT subtitles.
-![](expander.png)
+![](images/expander.png)
 
 - `05/07/2023`: **Extractive & Abstractive Summarization**: Whenever you request a transcription of an audio or video, the application will also provide two types of text summaries - extractive and abstractive summarization.
-![](resum.png)
+![](images/resum.png)
 
 ---
 
 ## Contributing
 Contributions to this project are welcome. Feel free to open issues or submit pull requests for any improvements or fixes you would like to contribute.
-
-
-

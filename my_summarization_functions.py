@@ -26,28 +26,29 @@ def authenticate_client():
 
 def sample_extractive_summarization(document):
     client = authenticate_client()
+    summary = []
     poller = client.begin_extract_summary(document)
     extract_summary_results = poller.result()
     for result in extract_summary_results:
-        if result.kind == "ExtractiveSummarization":
-            return "\n".join([sentence.text for sentence in result.sentences])
-        elif result.is_error is True:
-            print("...Is an error with code '{}' and message '{}'".format(
-                result.error.code, result.error.message
-            ))
+        if result.is_error is True:
+            print("...Is an error with code '{}' and message '{}'".format(result.error.code, result.error.message))
+        else :
+            summary.append("\n".join([sentence.text for sentence in result.sentences]))
+    return "\n".join(summary)
+        
 
 def sample_abstractive_summarization(document):
     client = authenticate_client()
-    summary = ""
+    summary = []
     poller = client.begin_abstract_summary(document)
     abstract_summary_results = poller.result()
     # summary.contexts
     for result in abstract_summary_results:
-        print(result,end='\n\n\n')
         if result.is_error is True:
             print("...Is an error with code '{}' and message '{}'".format(result.error.code, result.error.message))
-        summary += "\n".join([summary.text for summary in result.summaries]) + '\n\n'
-    return summary
+        else :
+            summary.append("\n".join([summary.text for summary in result.summaries]))
+    return "\n".join(summary)
 
 
 def sample_recognize_entities(document):
@@ -78,15 +79,18 @@ def sample_recognize_actions(document):
         )
     document_results = poller.result()
     for action_results in document_results:
+        test =[]
         for result in action_results:
-            if result.is_error is True:
-                print(f"...Is an error with code '{result.error.code}' and message '{result.error.message}'")
-            for entity in result.entities:
-                if entity.category not in dico :
-                    dico[entity.category] = set([entity.text])
-                else :
-                    dico[entity.category].add(entity.text)
-    return dico
+            print(result)
+            # if result.is_error is True:
+            #     print(f"...Is an error with code '{result.error.code}' and message '{result.error.message}'")
+            # for entity in result.entities:
+            #     if entity.category not in dico :
+            #         dico[entity.category] = set([entity.text])
+            #     else :
+            #         dico[entity.category].add(entity.text)
+    # return dico
+    
 
 
 def sample_extract_key_phrases(document):
@@ -121,4 +125,4 @@ if __name__ == '__main__':
         'online menu at www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com! '
         'The only complaint I have is the food didn\'t come fast enough. Overall I highly recommend it!'
     ]
-    print(sample_analyze_sentiment(document))
+    print(sample_abstractive_summarization(document))

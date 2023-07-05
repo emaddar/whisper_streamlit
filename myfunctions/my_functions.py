@@ -9,6 +9,42 @@ import yt_dlp
 
 
 
+
+def get_video_info(url):
+    video = YouTube(url)
+
+    video_info = {
+    "title": video.title,
+    "length": video.length,
+    "thumbnail_url": video.thumbnail_url,
+    "description": video.description,
+    "views": video.views,
+    "rating": video.rating,
+    "age_restricted": video.age_restricted,
+    "video_id": video.video_id,
+    "author": video.author,
+    "publish_date": video.publish_date,
+    "captions": video.captions,
+    "keywords": video.keywords,
+    #"video_streams": video.streams,
+    #"audio_streams": video.streams.filter(only_audio=True),
+    #"video_tags": video.video_tags,
+    #"length_seconds": video.length_seconds,
+    #"average_rating": video.average_rating,
+    #"is_closed_captioned": video.is_closed_captioned,
+    "channel_url": video.channel_url,
+    "channel_id": video.channel_id,
+    #"channel_subscribers": video.channel_subscribers,
+    #"related_videos": video.related_videos,
+    #"captions_available": video.captions_available,
+    #"thumbnail_resolution": video.thumbnail_resolution,
+    #"captions_tracks": video.captions_tracks,
+
+}
+
+
+    return video_info
+
 def current_directory(n):
     # Get the current directory
     current_directory = os.getcwd()

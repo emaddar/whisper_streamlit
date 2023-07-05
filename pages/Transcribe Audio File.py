@@ -1,8 +1,8 @@
 import streamlit as st
 import os
 from datetime import datetime
-from my_functions import current_directory, create_folder_and_directories, transcribe_mp3
-from my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
+from myfunctions.my_functions import current_directory, create_folder_and_directories, transcribe_mp3
+from myfunctions.my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
 from io import BytesIO
 from mutagen.mp3 import MP3
 from pydub import AudioSegment

@@ -2,8 +2,8 @@ import streamlit as st
 import os
 from datetime import datetime
 from moviepy.editor import VideoFileClip
-from my_functions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, with_opencv, download_youtube1
-from my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
+from myfunctions.my_functions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, download_youtube1, get_video_info
+from myfunctions.my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
 from io import BytesIO
 
 result = BytesIO()
@@ -46,6 +46,10 @@ video_url = st.text_input('Youtube link', 'https://www.youtube.com/watch?v=8Zx04
 youtube_button = st.button('Transcribe')
 
 if youtube_button or st.session_state.keep_graphics:
+    info = get_video_info(video_url)
+    st.write(info)
+    
+    
 
     mp4_directory, mp3_directory, txt_directory = create_folder_and_directories()
 

@@ -27,6 +27,8 @@ def make_grid(cols,rows):
             grid[i] = st.columns(rows)
     return grid
 
+with st.sidebar:
+    st.image('images/Robot_whisper2.jpg')
 
 st.header('Transcribe YouTube Video :video_camera:')
 

@@ -32,6 +32,10 @@ def make_grid(cols,rows):
     return grid
 
 
+
+with st.sidebar:
+    st.image('images/Robot_whisper1.jpg')
+
 st.header('Transcribe MP3 	:loud_sound:')
 
 

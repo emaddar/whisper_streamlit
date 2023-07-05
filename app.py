@@ -19,7 +19,7 @@ You can check the source code at this [github repository](https://github.com/ema
 
 Using this application is simple and straightforward : simply select the audio source and let this AI do the work :stuck_out_tongue_winking_eye:
 """)
-st.image('AI.jpg')
+st.image('images/AI.jpg')
 for i in range(2):
     st.write("")
 

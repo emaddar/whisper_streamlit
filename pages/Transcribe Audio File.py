@@ -1,17 +1,8 @@
 import streamlit as st
 import os
-import shutil
-from datetime import datetime, timedelta
-from pytube import YouTube
-from moviepy.editor import VideoFileClip
-import whisper
-import pandas as pd
-import pyperclip
+from datetime import datetime
 from my_functions import current_directory, create_folder_and_directories, transcribe_mp3
 from my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
-from my_audio_functions import convert_to_mp3
-import cv2
-import glob
 from io import BytesIO
 from mutagen.mp3 import MP3
 from pydub import AudioSegment

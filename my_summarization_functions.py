@@ -2,7 +2,6 @@
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 from dotenv import load_dotenv
-import os
 import streamlit as st
 # load_dotenv()
 # key1 = os.getenv('key1')

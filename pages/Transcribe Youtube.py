@@ -47,8 +47,8 @@ video_url = st.text_input('Youtube link', 'https://www.youtube.com/watch?v=8Zx04
 youtube_button = st.button('Transcribe')
 
 if youtube_button or st.session_state.keep_graphics:
-    info = get_video_info(video_url)
-    st.write(info)
+    # info = get_video_info(video_url)
+    # st.write(info)
     
     
 
@@ -213,6 +213,10 @@ if youtube_button or st.session_state.keep_graphics:
     # #st.text_area("The Summarized Text",file_contents, height=400)
     # st.write()
 
+    st.markdown("---")
+    st.markdown("### Text summarization ")
+
+
     mygrid0 = make_grid(1,2)
     with mygrid0[0][0]:
         with st.spinner("Extractive Summarization ..."):
@@ -223,8 +227,22 @@ if youtube_button or st.session_state.keep_graphics:
             abstractive_summarization = sample_abstractive_summarization([file_contents])
         st.text_area("Abstractive Summarization", abstractive_summarization, height=200)
 
-    annotated_text(*sample_recognize_to_annotated_text([file_contents]))
-    print(sample_recognize_to_annotated_text([file_contents]))
+    st.markdown("---")
+    
+
+    st.markdown("""### NER (Named Entity Recognition)""")
+    st.write("Named Entity Recognition (NER) is a natural language processing (NLP) task that involves identifying and classifying named entities within text into predefined categories. These entities can include names of people, organizations, locations, dates, quantities, and more as you can see in the photo.")
+    st.image("images/NER.png")
+    st.write("Please expand the section below to view the (NER) analysis of the provided text:")
+    mygrid1 = make_grid(1,2)
+    with mygrid1[0][0]:
+        with st.spinner("NER (Named Entity Recognition) ..."):
+            with st.expander("NER"):
+                annotated_text(*sample_recognize_to_annotated_text([file_contents]))
+
+    #with mygrid1[0][1]:
+        
+    
 
 
 for i in range(20):

@@ -3,8 +3,9 @@ import os
 from datetime import datetime
 from moviepy.editor import VideoFileClip
 from myfunctions.my_functions import current_directory, create_folder_and_directories, download_youtube, rename_videos, mp4_to_mp3, transcribe_mp3, download_youtube1, get_video_info
-from myfunctions.my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization
+from myfunctions.my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization, sample_recognize_to_annotated_text
 from io import BytesIO
+from annotated_text import annotated_text
 
 result = BytesIO()
 
@@ -221,6 +222,10 @@ if youtube_button or st.session_state.keep_graphics:
         with st.spinner("Abstractive Summarization ..."):
             abstractive_summarization = sample_abstractive_summarization([file_contents])
         st.text_area("Abstractive Summarization", abstractive_summarization, height=200)
+
+    annotated_text(*sample_recognize_to_annotated_text([file_contents]))
+    print(sample_recognize_to_annotated_text([file_contents]))
+
 
 for i in range(20):
     st.write("")

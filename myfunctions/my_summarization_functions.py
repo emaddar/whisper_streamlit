@@ -1,6 +1,10 @@
 # pip install --upgrade --force-reinstall azure-ai-textanalytics
 from azure.core.credentials import AzureKeyCredential
-from azure.ai.textanalytics import TextAnalyticsClient
+from azure.ai.textanalytics import (
+        TextAnalyticsClient,
+        RecognizeEntitiesAction,
+        RecognizePiiEntitiesAction,
+    )
 from dotenv import load_dotenv
 import streamlit as st
 # load_dotenv()
@@ -48,3 +52,34 @@ def sample_abstractive_summarization(document):
         else :
             summary.append("\n".join([summary.text for summary in result.summaries]))
     return "\n".join(summary)
+
+
+def sample_recognize_to_annotated_text(document):
+    client = authenticate_client()
+    poller = client.begin_analyze_actions(
+            document,
+            display_name="Sample Text Recognize",
+            actions=[
+                RecognizeEntitiesAction(),
+                RecognizePiiEntitiesAction(),
+            ],
+        )
+    document_results = poller.result()
+    score_min = 0.5
+    sort_by_start_order = lambda tuple: tuple[0]
+
+    ner = [sorted(list(set([(entity.offset,entity.offset+entity.length,entity.category,entity.confidence_score) for result in action_results if result.is_error is False for entity in result.entities if (entity.confidence_score > score_min)])), key=sort_by_start_order) for action_results in document_results]
+
+    filtered_ner = [[tup[:-1] for tup in texte_ner if tup[3] == max([t[3] for t in texte_ner if t[0] == tup[0] or t[1] == tup[1] or ((t[1] > tup[1]) and (t[0] < tup[0])) or ((t[1] < tup[1]) and (t[0] > tup[0]))])] for texte_ner in ner]
+
+    res =[]
+    for idx_texte,texte in enumerate(document):
+        position=0
+        for (start,stop,category) in filtered_ner[idx_texte]:
+            if texte[position:start] !='':
+                res.append((texte[position:start], ''))
+            res.append((texte[start:stop], category))
+            position = stop
+        res.append((texte[stop:], ''))
+        res.append(('\n',''))
+    return res[:-1]

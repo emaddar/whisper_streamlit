@@ -21,3 +21,4 @@ st-annotated-text
 pandas
 plotly-express
 vaderSentiment
+matplotlib

@@ -18,3 +18,6 @@ git+https://github.com/openai/whisper.git
 python-dotenv
 azure-ai-textanalytics
 st-annotated-text
+pandas
+plotly-express
+vaderSentiment

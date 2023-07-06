@@ -2,11 +2,15 @@ import streamlit as st
 import os
 from datetime import datetime
 from myfunctions.my_functions import current_directory, create_folder_and_directories, transcribe_mp3
-from myfunctions.my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization, sample_recognize_to_annotated_text
+from myfunctions.my_summarization_functions import sample_extractive_summarization, sample_abstractive_summarization, sample_recognize_to_annotated_text, list_to_dict
+from myfunctions.text_sentiment import plot_sentiment
 from io import BytesIO
 from mutagen.mp3 import MP3
 from pydub import AudioSegment
 from annotated_text import annotated_text
+import pandas as pd
+import plotly.express as px
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 result = BytesIO()
 
@@ -230,17 +234,68 @@ if audio_file is not None:
 
 
         st.markdown("---")
-        st.markdown("""### NER (Named Entity Recognition)""")
+
+        st.markdown("""### 🇳 🇪 🇷 (Named Entity Recognition)""")
         st.write("Named Entity Recognition (NER) is a natural language processing (NLP) task that involves identifying and classifying named entities within text into predefined categories. These entities can include names of people, organizations, locations, dates, quantities, and more as you can see in the photo.")
         st.image("images/NER.png")
-        st.write("Please expand the section below to view the (NER) analysis of the provided text:")
+        
         mygrid1 = make_grid(1,2)
         with mygrid1[0][0]:
             with st.spinner("NER (Named Entity Recognition) ..."):
-                with st.expander("NER"):
-                    annotated_text(*sample_recognize_to_annotated_text([file_contents]))
+                annotated_text(*sample_recognize_to_annotated_text([file_contents]))
 
-    #with mygrid1[0][1]:
+        with mygrid1[0][1]:
+            with st.spinner("DataFrame ..."):
+                dico = list_to_dict([file_contents])
+                df = pd.DataFrame(dico.items(), columns=['Entity', 'Values'])
+                
+                df['Unique Values'] = df['Values'].apply(lambda x: list(set(x)))
+                df['Number of Elements'] = df['Values'].apply(lambda x: len(x))
+                df = df.drop_duplicates(subset='Values').reset_index(drop=True)
+                df = df.drop('Values', axis=1)  # Drop the 'Values' column
+                st.dataframe(df)
+
+        # Create the bar chart using Plotly
+        fig = px.bar(df, x='Entity', y='Number of Elements', labels={'Entity': 'Entity', 'Count': 'Number of Values'})
+
+        # Set layout properties
+        fig.update_layout(
+            xaxis=dict(tickangle=0),
+            height=400  # Adjust the height as per your requirement
+        )
+
+        # Display the chart using Streamlit
+        st.plotly_chart(fig, use_container_width = True)    
+        
+
+
+        st.markdown("---")
+        st.markdown("""### Sentiment Analysis 😃 😶 😡 """)
+        st.write("""
+        The `compound score` typically ranges from -1 to +1, where -1 indicates extremely negative sentiment, +1 indicates extremely positive sentiment, and 0 represents neutral sentiment.
+            """)
+
+        analyser = SentimentIntensityAnalyzer()
+        score = analyser.polarity_scores(file_contents)
+        polarity_vader = score['compound']
+        
+    
+
+
+        mygrid2 = make_grid(1,3)
+        with mygrid2[0][1]:
+            st.markdown(f"##### Compound Score = {polarity_vader}")
+
+        if polarity_vader > 0:
+            st.write("The sentiment of this text is likely to be positive")
+        elif polarity_vader == 0 :
+            st.write("The sentiment of this text is likely to be neutral")
+        else:
+            st.write("The sentiment of this text is likely to be negative")
+            
+        fig = plot_sentiment(polarity_vader)
+        # Display the plot in Streamlit
+        st.pyplot(fig)
         
     for i in range(20):
         st.write("")

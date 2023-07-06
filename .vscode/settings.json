@@ -5,6 +5,9 @@
         "readme",
         "MP3 Page",
         "Youtube page",
-        "Summarization"
+        "Summarization",
+        "python",
+        "NER",
+        "Sentiment_Analyser"
     ]
 }

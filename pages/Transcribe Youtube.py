@@ -87,11 +87,11 @@ if youtube_button or st.session_state.keep_graphics:
             
             col2.audio(f"{mp3_directory}/my_audio.mp3")
             
-
             with st.spinner("Transcribe YouTube Video ... "):
-                    result = transcribe_mp3(mp3_directory, "my_audio") 
+                    st.write(f"{mp3_directory}\my_audio.mp3")
+                    result = transcribe_mp3(mp3_directory) 
     
-                    txt_path = f"{txt_directory}/output.txt" 
+                    txt_path = f"{txt_directory}\output.txt" 
     
                     # Open the file in write mode
                     with open(txt_path, 'w') as file:

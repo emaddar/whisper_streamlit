@@ -174,7 +174,8 @@ def rename_videos(mp4_directory):
 
 def mp4_to_mp3(mp4_directory, video_extension, mp3_directory):
      # Load the video file
-    video = VideoFileClip(f"{mp4_directory}/video.{video_extension}")
+    #video = VideoFileClip(f"{mp4_directory}/video.{video_extension}")
+    video = VideoFileClip(f"{mp4_directory}/video.mp4")
 
     # Extract the audio from the video file
     audio = video.audio
@@ -188,10 +189,10 @@ def mp4_to_mp3(mp4_directory, video_extension, mp3_directory):
 
 
 
-def transcribe_mp3(mp3_directory, my_audio):
+def transcribe_mp3(mp3_directory):
     model = whisper.load_model("tiny")
     # model = whisper.load_model("small")
-    result = model.transcribe(f"{mp3_directory}/{my_audio}.mp3")
+    result = model.transcribe(f"{mp3_directory}\my_audio.mp3")
     #print(result["text"])
     return result
 

@@ -7,7 +7,6 @@ from azure.ai.textanalytics import (
     )
 from dotenv import load_dotenv
 import os
-import typing
 load_dotenv()
 key1 = os.getenv('key1')
 key2 = os.getenv('key2')
@@ -56,7 +55,6 @@ def sample_recognize_entities(document):
     result = client.recognize_entities(document)
     result = [review for review in result if not review.is_error]
     dico = {}
-    # entity.confidence_score
     for review in result:
         for entity in review.entities:
             if entity.category not in dico :
@@ -91,7 +89,7 @@ def sample_recognize_actions(document):
 
 
 
-def sample_recognize_to_annotated_text(document):
+def sample_recognize(document):
     client = authenticate_client()
     poller = client.begin_analyze_actions(
             document,
@@ -105,14 +103,19 @@ def sample_recognize_to_annotated_text(document):
     score_min = 0.5
     sort_by_start_order = lambda tuple: tuple[0]
 
-    ner = [sorted(list(set([(entity.offset,entity.offset+entity.length,entity.category,entity.confidence_score) for result in action_results if result.is_error is False for entity in result.entities if (entity.confidence_score > score_min)])), key=sort_by_start_order) for action_results in document_results]
+    ner = [sorted(list(set([(entity.offset,entity.offset+entity.length,entity.category,entity.text,entity.confidence_score) for result in action_results if result.is_error is False for entity in result.entities if (entity.confidence_score > score_min)])), key=sort_by_start_order) for action_results in document_results]
+    
+    filtered_ner = [[tup[:-1] for tup in texte_ner if tup[4] == max([t[4] for t in texte_ner if t[0] == tup[0] or t[1] == tup[1] or ((t[1] > tup[1]) and (t[0] < tup[0])) or ((t[1] < tup[1]) and (t[0] > tup[0]))])] for texte_ner in ner]
+    return filtered_ner
 
-    filtered_ner = [[tup[:-1] for tup in texte_ner if tup[3] == max([t[3] for t in texte_ner if t[0] == tup[0] or t[1] == tup[1] or ((t[1] > tup[1]) and (t[0] < tup[0])) or ((t[1] < tup[1]) and (t[0] > tup[0]))])] for texte_ner in ner]
 
+    
+def sample_recognize_to_annotated_text(document):
+    filtered_ner = sample_recognize(document)
     res =[]
     for idx_texte,texte in enumerate(document):
         position=0
-        for (start,stop,category) in filtered_ner[idx_texte]:
+        for (start,stop,category,entity) in filtered_ner[idx_texte]:
             if texte[position:start] !='':
                 res.append(texte[position:start])
             replace = f'("{texte[start:stop]}", "{category}")'
@@ -157,4 +160,6 @@ if __name__ == '__main__':
         'online menu at www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com! '
         'The only complaint I have is the food didn\'t come fast enough. Overall I highly recommend it!'
     ]
-    print(sample_recognize_to_annotated_text(document))
+    # print(sample_recognize_to_annotated_text(document))
+    print(sample_recognize(document))
+    # print(sample_recognize_actions(document))

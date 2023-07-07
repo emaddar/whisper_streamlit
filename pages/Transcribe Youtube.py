@@ -51,10 +51,37 @@ video_url = st.text_input('Youtube link', 'https://www.youtube.com/watch?v=8Zx04
 youtube_button = st.button('Transcribe')
 
 if youtube_button or st.session_state.keep_graphics:
-    # info = get_video_info(video_url)
-    # st.write(info)
-    
-    
+    info = get_video_info(video_url)
+    st.markdown(f"#### {info['title']}")
+
+    grid_video = make_grid(1,6)
+
+    with grid_video[0][0]:
+         st.markdown(f"""
+                     Views
+                     #### {info['views']} sec.
+                     """)
+    with grid_video[0][1]:
+         st.markdown(f"""
+                     Length
+                     #### {info['length']} sec.
+                     """)
+    with grid_video[0][2]:
+        st.markdown(f"""
+                    Author
+                    #### {info['author']}
+                    """)
+    with grid_video[0][3]:
+        st.markdown(f"""
+                    Publish date
+                    #### {datetime.strftime(info['publish_date'], "%Y-%m-%d")}
+                    """)
+    with grid_video[0][4]:
+        st.image(info['thumbnail_url'])
+
+
+    if info['age_restricted']:
+        st.warning('This video is age restricted. The application will stop at this point.', icon="⚠️")
 
     mp4_directory, mp3_directory, txt_directory = create_folder_and_directories()
 

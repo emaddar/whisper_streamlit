@@ -59,7 +59,7 @@ if youtube_button or st.session_state.keep_graphics:
     with grid_video[0][0]:
          st.markdown(f"""
                      Views
-                     #### {info['views']} sec.
+                     #### {info['views']}
                      """)
     with grid_video[0][1]:
          st.markdown(f"""

@@ -74,9 +74,10 @@ if youtube_button or st.session_state.keep_graphics:
     with grid_video[0][3]:
         st.markdown(f"""
                     video id
-                    #### {datetime.strftime(info['video_id'], "%Y-%m-%d")}
+                    #### {info['video_id']}
                     """)
     with grid_video[0][4]:
+        
         st.markdown(f"""
                     Publish date
                     #### {datetime.strftime(info['publish_date'], "%Y-%m-%d")}

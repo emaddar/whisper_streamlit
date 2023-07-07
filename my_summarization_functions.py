@@ -161,5 +161,6 @@ if __name__ == '__main__':
         'The only complaint I have is the food didn\'t come fast enough. Overall I highly recommend it!'
     ]
     # print(sample_recognize_to_annotated_text(document))
-    print(sample_recognize(document))
+    # print(sample_recognize(document))
     # print(sample_recognize_actions(document))
+    print(sample_extract_key_phrases(document))

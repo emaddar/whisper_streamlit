@@ -90,6 +90,7 @@ if youtube_button or st.session_state.keep_graphics:
         st.warning('This video is age restricted. The application will stop at this point.', icon="⚠️")
     else :
         mp4_directory, mp3_directory, txt_directory = create_folder_and_directories()
+        duration = info['length']
 
         with st.spinner("Download Youtube as MP4"):
 
@@ -173,7 +174,7 @@ if youtube_button or st.session_state.keep_graphics:
 
                         
                 video = VideoFileClip(video_mp4)
-                duration = video.duration
+                #duration = video.duration
 
                 # Calculate the number of 3-minute segments
                 num_segments = int(duration // 180) + 1
